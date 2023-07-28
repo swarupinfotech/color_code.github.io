@@ -1,0 +1,860 @@
+<!-- Created by swarup -->
+
+<!--Thank you Sololearn for making this code as  COTD🙋-->
+<!DOCTYPE html>
+<html>
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1.0">
+      
+      <meta name="author" content="Morpheus">
+      <meta name="keywords" content="morpheus">
+      <meta name="description" content="project">
+      <title>SwarupInfotech</title>
+      <script>// Created by swarup kumar
+
+        //code by swarup mahato
+        window.onload = function() {
+            var imgArr = [
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfdu_u8htAKXE3QejTdvF3rUTmjISvTYW1R9FzlvsG9D3aJrB4",
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcST9W13WPjNLAE97rYGMN2FjqLalSRaxQUvtsnd_OyakzFxgjqC",
+                "http://www.color-theory-phenomena.nl/06-color-mixing/06-00-01-color-mixing-RGB.gif",
+                "http://www.workwithcolor.com/cona-hue-ranges-map-02.png",
+                "https://upload.wikimedia.org/wikipedia/commons/8/8c/Color_star-en_%28tertiary_names%29.svg",
+                "http://industrystandarddesign.com/wp-content/uploads/2015/08/how-to-get-brown-color.jpg",
+                "https://upload.wikimedia.org/math/8/5/0/850db6c317cef61ef3544c2b4e9d2cae.png",
+                "http://www.cis.upenn.edu/~cis110/12fa/hw/hw01/rgb2cmyk.png",
+                "https://i.stack.imgur.com/FTH7K.png",
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/HSV-RGB-comparison.svg/300px-HSV-RGB-comparison.svg.png",
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Hsl-and-hsv.svg/300px-Hsl-and-hsv.svg.png"
+            ];
+            //HSL to RGB function by Luke McClean (Stackoverflow)
+            function hslToRgb(h, s, l) {
+                var r, g, b;
+        
+                if (s == 0) {
+                    r = g = b = l; // achromatic
+                } else {
+                    var hue2rgb = function hue2rgb(p, q, t) {
+                        if (t < 0) t += 1;
+                        if (t > 1) t -= 1;
+                        if (t < 1 / 6) return p + (q - p) * 6 * t;
+                        if (t < 1 / 2) return q;
+                        if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+                        return p;
+                    }
+        
+                    var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+                    var p = 2 * l - q;
+                    r = hue2rgb(p, q, h + 1 / 3);
+                    g = hue2rgb(p, q, h);
+                    b = hue2rgb(p, q, h - 1 / 3);
+                }
+        
+                return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+            }
+            var next = document.getElementById("next");
+            var images = document.querySelector("#img img");
+            var imgPtr = 0;
+            next.onclick = function() {
+                if (imgPtr < imgArr.length) {
+                    images.src = imgArr[imgPtr++];
+                } else {
+                    imgPtr = 0;
+                    images.src = imgArr[imgPtr++];
+                }
+            };
+            var b = document.body;
+            var mode = "RGB";
+            const repeatCount = 2;
+            var animationCount = 0;
+            var ipr = document.getElementById("ipr");
+            var ipg = document.getElementById("ipg");
+            var ipb = document.getElementById("ipb");
+            var submit = document.getElementById("submit");
+        
+            var slider1 = document.getElementById("slider1");
+            var slider2 = document.getElementById("slider2");
+            var slider3 = document.getElementById("slider3");
+            // console.log(typeof slider1.min);
+            slider1.oninput = function() {
+                if (mode === "RGB") {
+                    slider1.min = "0";
+                    slider1.max = "255";
+                    ipr.value = slider1.value;
+                    submit.click();
+                } else if (mode === "HSL") {
+                    slider1.min = "0";
+                    slider1.max = "360";
+                    ipr.value = slider1.value;
+                    submit.click();
+                }
+            };
+            slider2.oninput = function() {
+                if (mode === "RGB") {
+                    slider2.min = "0";
+                    slider2.max = "255";
+                    ipg.value = slider2.value;
+                    submit.click();
+                } else if (mode === "HSL") {
+                    slider2.min = "0";
+                    slider2.max = "100";
+                    ipg.value = slider2.value;
+                    submit.click();
+                }
+            };
+            slider3.oninput = function() {
+                if (mode === "RGB") {
+                    slider3.min = "0";
+                    slider3.max = "255";
+                    ipb.value = slider3.value;
+                    submit.click();
+                } else if (mode === "HSL") {
+                    slider3.min = "0";
+                    slider3.max = "100";
+                    ipb.value = slider3.value;
+                    submit.click();
+                }
+            };
+            // if(slider1.oninput){
+            //   console.log("RealTimeChange");
+            // }
+        
+            submit.onclick = function() {
+                if (mode === "RGB") {
+                    if (ipr.value > 255 || ipr.value < 0) {
+                        alert("Red value should be between 0 to 255");
+                    } else if (ipg.value > 255 || ipg.value < 0) {
+                        alert("GREEN value must be between 0 to 255");
+                    } else if (ipb.value > 255 || ipb.value < 0) {
+                        alert("BLUE value must be between 0 and 255");
+        
+                    } else {
+                        var clr = "";
+                        clr = "rgb(" + ipr.value + "," + ipg.value + "," + ipb.value + ")";
+                        b.style.background = clr;
+        
+                        var hex = document.getElementById("hex");
+                        var hr = parseInt(ipr.value).toString(16);
+                        var hg = parseInt(ipg.value).toString(16);
+                        var hb = parseInt(ipb.value).toString(16);
+                        // console.log(hr+hg+hb);
+                        if (ipr.value <= 15 && ipg.value <= 15 && ipb.value <= 15) {
+                            hr = "0" + hr;
+                            hg = "0" + hg;
+                            hb = "0" + hb;
+                        } else if (ipr.value <= 15 && ipg.value <= 15) {
+                            hr = "0" + hr;
+                            hg = "0" + hg;
+                        } else if (ipr.value <= 15 && ipb.value <= 15) {
+                            hr = "0" + hr;
+                            hb = "0" + hb;
+                        } else if (ipg.value <= 15 && ipb.value <= 15) {
+                            hb = "0" + hb;
+                            hg = "0" + hg;
+                        } else if (ipr.value <= 15) {
+                            hr = "0" + hr;
+                        } else if (ipg.value <= 15) {
+                            hg = "0" + hg;
+                        } else if (ipb.value <= 15) {
+                            hb = "0" + hb;
+                        }
+                        hex.textContent = " # " + hr + " " + hg + " " + hb + " ";
+                    }
+                } else if (mode === "HSL") {
+                    if (ipr.value > 360 || ipr.value < 0) {
+                        alert("HUE value should be between 0 to 360");
+                    } else if (parseInt(ipg.value) > 100 || parseInt(ipg.value) < 0) {
+                        alert("SATURATION value must be between 0% to 100%");
+                    } else if (parseInt(ipb.value) > 100 || parseInt(ipb.value) < 0) {
+                        alert("LIGHTNESS value must be between 0% to 100%");
+        
+                    } else {
+                        var clr = "";
+                        clr = "hsl(" + ipr.value + "," + ipg.value + "%," + ipb.value + "%)";
+                        b.style.background = clr;
+        
+                        var rgbArr = hslToRgb(ipr.value / 360, ipg.value / 100, ipb.value / 100);
+                        //console.log(rgbArr[0]+"\t"+rgbArr[1]+"\t"+rgbArr[2]);
+                        var hex = document.getElementById("hex");
+                        var hr = parseInt(rgbArr[0]).toString(16);
+                        var hg = parseInt(rgbArr[1]).toString(16);
+                        var hb = parseInt(rgbArr[2]).toString(16);
+        
+                        if (rgbArr[0] <= 15 && rgbArr[1] <= 15 && rgbArr[2] <= 15) {
+                            hr = "0" + hr;
+                            hg = "0" + hg;
+                            hb = "0" + hb;
+                        } else if (rgbArr[0] <= 15 && rgbArr[1] <= 15) {
+                            hr = "0" + hr;
+                            hg = "0" + hg;
+                        } else if (rgbArr[0] <= 15 && rgbArr[2] <= 15) {
+                            hr = "0" + hr;
+                            hb = "0" + hb;
+                        } else if (rgbArr[1] <= 15 && rgbArr[2] <= 15) {
+                            hb = "0" + hb;
+                            hg = "0" + hg;
+                        } else if (rgbArr[0] <= 15) {
+                            hr = "0" + hr;
+                        } else if (rgbArr[1] <= 15) {
+                            hg = "0" + hg;
+                        } else if (rgbArr[2] <= 15) {
+                            hb = "0" + hb;
+                        }
+                        hex.textContent = " # " + hr + " " + hg + " " + hb + " ";
+                    }
+                }
+            };
+            var dig = document.getElementById("dig");
+            var img = document.getElementById("img");
+            var post = document.querySelector(".post");
+            dig.onclick = function() {
+                img.style.transform = "scale(1.0)";
+                setTimeout(function() {
+                    post.style.animation = "posts 3s 0.6s 2 alternate forwards";
+                }, 300);
+                post.style.animation = "none";
+            };
+            var close = document.getElementById("close");
+            close.onclick = function() {
+                img.style.transform = "scale(0)";
+            };
+            var rand = document.getElementById("rand");
+            rand.onclick = function() {
+                if (mode === "RGB") {
+                    ipr.value = Math.floor(Math.random() * 256);
+                    ipg.value = Math.floor(Math.random() * 256);
+                    ipb.value = Math.floor(Math.random() * 256);
+                    slider1.value = ipr.value;
+                    slider2.value = ipg.value;
+                    slider3.value = ipb.value;
+                    submit.click();
+                } else if (mode === "HSL") {
+                    ipr.value = Math.floor(Math.random() * 360);
+                    ipg.value = Math.floor(Math.random() * 100);
+                    ipb.value = Math.floor(Math.random() * 100);
+                    slider1.value = ipr.value;
+                    slider2.value = ipg.value;
+                    slider3.value = ipb.value;
+                    submit.click();
+                }
+            };
+            var sch = document.getElementById('switch');
+            var ip1 = document.getElementById('ip1');
+            var ip2 = document.getElementById('ip2');
+            var ip3 = document.getElementById('ip3');
+            var h2 = document.querySelector('h2');
+            var ipbg = document.querySelectorAll('.ip');
+            var notesRGB = document.getElementById("notesRGB");
+            var notesHSL = document.getElementById("notesHSL");
+        
+            sch.onclick = function() {
+                if (sch.value == "HSL/HSV mode") {
+                    mode = "HSL";
+                    alert("In HSL mode the 3 parameters are\n1.Hue (0-360 degree) defines color on color wheel\n2.Saturation (0-100%) defines Gray shade strength or intensity of color\n3.Lightness (0-100%) defines lightness\n\nExample-\ncolor:hsl(320, 70%, 20%)\n\nRefer Diagrams for HUE color wheel;");
+                    sch.value = "RGB mode";
+                    ip1.textContent = "HUE";
+                    ip2.textContent = "SATURATION";
+                    ip3.textContent = "LIGHTNESS";
+                    // h2.textContent = "Test your color in hsl() format,(0 to 360 deg, 0-100%, 0-100%)";
+                    // ipbg[0].style.background = "linear-gradient(270deg,blue,green,red)";
+                    // ipbg[1].style.background = "linear-gradient(270deg,#444, #aaa)";
+                    // ipbg[2].style.background = "linear-gradient(270deg,#000,#fff)";
+                    ipr.style.background = "linear-gradient(270deg,blue,green,red)";
+                    ipg.style.background = "linear-gradient(270deg,#444, #aaa)";
+                    ipb.style.background = "linear-gradient(270deg,#000,#fff)";
+                    ipb.style.color = "black";
+                    slider1.style.background = "linear-gradient(90deg,#f00 0%,#0f0 33.33%,#00f  66.66%, #f00 100%)";
+                    // var saturation = "hsl("++",100%,50%)";
+                    slider2.style.background = "linear-gradient(90deg,#555,#aaa)";
+                    slider3.style.background = "linear-gradient(270deg,#fff,#000000)";
+        
+                    notesHSL.style.display = "block";
+                    notesRGB.style.display = "none";
+                    notesHSL.style.opacity = "1";
+                    notesRGB.style.opacity = "0";
+        
+                } else if (sch.value == "RGB mode") {
+                    mode = "RGB";
+                    alert("In RGB mode the 3 parameters are\n1.Red (0-255) in decimal\n2.Green (0-255) in decimal\n3.Blue (0-255) in decimal\n\nNote that in Hexadecimal representation of rgb color we convert 0-255 decimal to 00-ff hexadecimal for each color\n\nExample-\n color:rgb(45,250,180);");
+                    sch.value = "HSL/HSV mode";
+                    ip1.textContent = "RED";
+                    ip2.textContent = "GREEN";
+                    ip3.textContent = "BLUE";
+                    // h2.textContent = "Test your color in rgb() format, values between 0 to 255";
+                    // ipbg[0].style.background = "linen";
+                    // ipbg[1].style.background = "linen";
+                    // ipbg[2].style.background = "linen";
+                    ipr.style.background = "#f00";
+                    ipg.style.background = "#0f0";
+                    ipb.style.background = "#00f";
+                    ipb.style.color = "white";
+                    slider1.style.background = "linear-gradient(90deg,#000,#ff0000)";
+                    slider2.style.background = "linear-gradient(90deg,#000,#00ff00)";
+                    slider3.style.background = "linear-gradient(90deg,#000,#0000ff)";
+        
+                    notesHSL.style.display = "none";
+                    notesRGB.style.display = "block";
+                    notesHSL.style.opacity = "0";
+                    notesRGB.style.opacity = "1";
+                }
+            };
+        
+            var cnameArr = {
+                Honeydew: "#F0FFF0",
+                HotPink: "#FF69B4",
+                IndianRed: "#CD5C5C",
+                Indigo: "#4B0082",
+                Ivory: "#FFFFF0",
+                Linen: "#FAF0E6",
+                Magenta: "#FF00FF",
+                Maroon: "#800000",
+                MediumAquamarine: "#66CDAA",
+                MediumBlue: "#0000CD",
+                MintCream: "#F5FFFA",
+                MistyRose: "#FFE4E1",
+                Moccasin: "#FFE4B5",
+                NavajoWhite: "#FFDEAD",
+                PaleTurquoise: "#AFEEEE",
+                PaleVioletRed: "#DB7093",
+                PapayaWhip: "#FFEFD5",
+                PeachPuff: "#FFDAB9",
+                Peru: "#CD853F",
+                PaleRed: "#C84C61"
+            };
+            var cNameUl = document.querySelector('#colorNames ul');
+            for (let key in cnameArr) {
+                var li = document.createElement("LI");
+                var colorName = document.createTextNode(key);
+                var colorValue = document.createTextNode(cnameArr[key]);
+                var cbox = document.createElement("SPAN");
+                cbox.setAttribute("ID", "cbox");
+                //var attr = document.createAttribute("ID");
+                cbox.appendChild(colorValue);
+                li.appendChild(colorName);
+                li.appendChild(cbox);
+                cNameUl.appendChild(li);
+        
+                li.style.background = cnameArr[key];
+        
+                li.addEventListener("click", function() {
+                    document.body.style.background = cnameArr[key];
+                }, false);
+                //console.log(cnameArr[key]);
+            }
+        
+        };
+        </script>
+      <style>/* Created by swarup*/
+
+        html, body {
+            margin: 0 auto;
+            padding: 0;
+            height: 100%;
+            max-height: 700px;
+            max-width: 700px;
+            position:fixed;
+        }
+        
+        body {
+            /*margin: 0 auto;*/
+            width: 100%;
+            height:100%;
+            background-color: #f1fefe;
+            margin: 0;
+            padding: 0;
+            font-size: 17px;
+        }
+        
+        .container {
+            display: block;
+            max-width: 600px;
+            margin: 0 auto;
+            padding-left: 3px;
+            padding-right:3px;
+            position: fixed;
+            height: 100%;
+            border: 1px solid #000;
+        }
+        
+        h2 {
+            font-size: 25px;
+            text-align: center;
+            margin:8px 0 14px 0;
+            text-shadow: 2px 2px 20px #fff,1px 1px 5px #fff;
+        }
+        
+        #heading{
+            height: 35px;
+            font-weight: bold;
+            letter-spacing: -1px;
+            text-shadow: 2px 2px 20px #fff,1px 1px 5px #fff;
+            padding:10px 0 5px 0;
+            border: 5px outset #999;
+            border-radius: 100px 0 100px 0;
+            background: linear-gradient(90deg,hsla(80, 30%, 50%, 0.5),hsla(280, 30%, 100%, 1));
+        }
+        
+        .ip {
+            display: block;
+            margin: 10px auto;
+            background-color: linen;
+            width: 100%;
+            height: 25px;
+        }
+        
+        #ip1, #ip2, #ip3 {
+            display: inline-block;
+            width: 70px;
+            height: 25px;
+            padding: 2px 5px 2px 5px;
+            font-weight: bold;
+            letter-spacing: -1px;
+            margin: 0;
+        }
+        
+        .sliderContainer {
+            box-sizing: border-box;
+            width: 150px;
+            height: 25px;
+            margin: 0 10px 0 3px;
+            display: inline-block;
+            float: right;
+        }
+        
+        #slider1, #slider2, #slider3 {
+            height: 15px;
+            -webkit-appearance: none;
+            width: 100%;
+            outline: none;
+            opacity: 0.9;
+            -webkit-transition: .2s;
+            transition: opacity .2s;
+            border: 2px outset #aaa;
+            border-radius: 5px;
+            margin: 3px 0 3px 0;
+        }
+        
+        #slider1:hover, #slider2:hover, #slider3:hover {
+            opacity: 1;
+        }
+        
+        #slider1 {
+            background: linear-gradient(90deg, #000, #f00);
+        }
+        
+        #slider2 {
+            background: linear-gradient(90deg, #000, #0f0);
+        }
+        
+        #slider3 {
+            background: linear-gradient(90deg, #000, #00f);
+        }
+        
+        #ipr, #ipg, #ipb {
+            display: inline-block;
+            width: 50px;
+            height: 15px;
+            padding: 0;
+            float: right;
+            margin: 3px 3px 3px 3px;
+            outline: none;
+            border: 2px outset #aaa;
+            border-radius: 5px;
+        }
+        
+        #ipr {
+            background-color: #f00;
+            color: #fff;
+        }
+        
+        #ipg {
+            background-color: #0f0;
+            color: #000;
+        }
+        
+        #ipb {
+            background-color: #00f;
+            color: #fff;
+        }
+        
+        .btn {
+            display: inline-block;
+            margin: 10px 0 10px 0;
+            border: 4px outset gray;
+            animation: bttn 1.3s infinite alternate;
+            outline: none;
+            border-radius: 10px;
+            padding: 3px 6px;
+            cursor: pointer;
+        }
+        
+        .btn:active {
+            outline: none;
+        }
+        
+        #submit:hover, #rand:hover, #switch:hover {
+            animation: btnshake 0.05s 3 alternate;
+            outline: none;
+        }
+        
+        #submit {
+            float: right;
+            width:76px;
+            margin-right: 3px;
+            animation-direction: alternate-reverse;
+        }
+        
+        #rand {
+            width:76px;
+            float: right;
+            margin-right: 5px;
+        }
+        #switch{
+            margin-left:2px;
+            width:130px;
+        }
+        
+        .hex{
+              text-shadow: 1px 1px 0px #fff;
+              text-align: center;
+              font-size: 15px;
+        }
+        
+        #hex {
+            display:inline-block;
+            background-color: #fafafe;
+            border: 1px solid #000;
+            padding:1px 2px;
+            /*font-size: 20px;*/
+            font-weight: bold;
+        }
+        
+        @keyframes bttn {
+            from {
+                border-color: #efefef;
+            }
+            to {
+                border-color: #989898;
+            }
+        }
+        
+        .post {
+            width: 0%;
+            height: 20px;
+            color: white;
+            background-color: #000;
+            /*padding: 20px 5px;*/
+            overflow: hidden;
+            animation: none;
+        }
+        
+        @keyframes posts {
+            from {
+                width: 0%;
+            }
+            to {
+                width: 100%;
+            }
+        }
+        
+        #lowerBlock {
+            margin: auto 30px;
+            /*text-shadow: 1px 1px 0px #fff;*/
+            color:#fff;
+        }
+        #notesRGB{
+          display:block;
+          opacity: 1;
+          overflow: hidden;
+          transition: opacity 1s linear 0;
+        }
+        #notesHSL{
+          display:none;
+          opacity: 0;
+          overflow: hidden;
+          transition: opacity 1s linear 0;
+        }
+        #dig {
+            border-radius: 10px;
+            background-color: #000;
+            padding: 0 6px;
+            border: 1px solid black;
+            color: #fff;
+            animation: letter 2s infinite linear alternate;
+        }
+        
+        #dig:hover{
+            cursor:pointer;
+            background-color:#fff;
+            color:#000;
+        }
+        
+        #img {
+            display: block;
+            transform: scale(0);
+            transform-origin: 50% 50%;
+            top: 40px;
+            left: 30px;
+            width: 300px;
+            height: 370px;
+            z-index: 1;
+            position: absolute;
+            margin: 0 auto;
+            background-color: #efefef;
+            transition: transform 0.6s;
+            box-shadow: 3px 3px 5px black, 3px 5px 10px black;
+        }
+        
+        #img>img {    position: absolute;
+            width: 294px;
+            /*height:330px;*/
+            height: auto;
+            padding: 3px;
+            display: block;
+            margin: 0;
+            object-fit:scale-down;
+        }
+        
+        #close, #next {
+            display: inline-block;
+            width: 300px;
+            padding-top: 10px;
+            text-align: center;
+            height: 30px;
+            color: #3a2a1a;
+            background-color: #efafaf;
+            border: 1px solid black;
+            margin: 0;
+            cursor: pointer;
+        }
+        
+        .sidenav {
+            height: 100%;
+            width: 0%;
+            position: absolute;
+            z-index: 1;
+            top: 0px;
+            right: 0px;
+            background: linear-gradient(270deg, deepskyblue, black);
+            overflow-x: hidden;
+            transition: 0.5s;
+            margin: 0;
+            opacity: 0.9;
+        }
+        
+        #colorNames {
+            background: linear-gradient(90deg, deepskyblue, black);
+            left: 0px;
+            right: auto;
+            overflow-x: hidden;
+            overflow-y: scroll;
+            opacity: 1;
+        }
+        
+        #colorNames ul {
+            margin: 60px 0 0 0;
+            padding: 0 5px;
+        }
+        
+        .sidenav li {
+            color: yellow;
+            border-bottom: 1px solid yellow;
+        }
+        
+        #colorNames li {
+            background-color: #afd8dc;
+            list-style-type: none;
+            border: none;
+            height: 28px;
+            color: #152f36;
+            margin: 4px 0;
+            padding: 2px 0 2px 5px;
+            font-size: 18px;
+        }
+        
+        .sidenav a {
+            padding: 10px 0 10px 10px;
+            margin: 0;
+            text-decoration: none;
+            font-size: 18px;
+            color: #efefef;
+            display: block;
+        }
+        
+        #colorNames #cbox {
+            border: 1px solid #000;
+            border-radius: 10px 0 10px 0;
+            display: inline-block;
+            float: right;
+            background-color: #afd8dc;
+            padding: 3px 5px 3px 5px;
+            margin: 1px 0;
+            color: #152f36;
+        }
+        
+        .sidenav .closebtn {
+            position: absolute;
+            top: 0;
+            right: 5px;
+            font-size: 36px;
+            color: #2a2a2a;
+        }
+        
+        #colorNames .closebtn {
+            color: yellow;
+        }
+        
+        #refs, #cnames {
+            font-size: 30px;
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            cursor: pointer;
+            text-shadow: 2px 2px 20px #fff,1px 1px 5px #fff;
+        }
+        
+        #cnames {
+            right: auto;
+            left: 10px;
+        }
+        
+        @keyframes letter {
+            0% {
+                text-shadow: -2px  0 0 white;
+            }
+            25% {
+                text-shadow: -1px 0 0 white;
+            }
+            50% {
+                text-shadow: 0px 0 0 white;
+            }
+            75% {
+                text-shadow: 1px  0 0 white;
+            }
+            100% {
+                text-shadow: 2px  0 0 white;
+            }
+        }
+        
+        @keyframes btnshake {
+            from {
+                transform: rotate(3deg);
+            }
+            to {
+                transform: rotate(-3deg);
+            }
+        }
+        
+        #ipr:focus, #ipg:focus, #ipb:focus {
+            font-size: 1.09em;
+            transition: font-size 0.2s;
+        }
+        @media (min-width:600px) {
+            .container{
+              position:relative;
+            }
+        }
+        </style>
+    </head>
+
+<body>
+    <div class="container">
+        <h2 id="heading">HTML COLOR STUDY</h2>
+        <div class="ip">
+            <span id="ip1">RED</span>
+            <span class="sliderContainer">
+              <input type="range" min="0" max="255" value="10" class="colorSlider" id="slider1">
+            </span>
+            <input id="ipr" type="number" max="255" min="0" value="10" />
+        </div>
+        <div class="ip">
+            <span id="ip2">GREEN</span>
+            <span class="sliderContainer">
+              <input type="range" min="0" max="255" value="200" class="colorSlider" id="slider2">
+            </span>
+            <input id="ipg" type="number" max="255" min="0" value="200" />
+        </div>
+        <div class="ip">
+            <span id="ip3">BLUE</span>
+            <span class="sliderContainer">
+              <input type="range" min="0" max="255" value="255" class="colorSlider" id="slider3">
+            </span>
+            <input id="ipb" type="number" max="255" min="0" value="255" />
+        </div>
+        <input id="switch" class="btn" type="button" value="HSL/HSV mode" />
+        <input id="submit" class="btn" type="button" value="submit" />
+        <input id="rand" class="btn" type="button" value="random" />
+
+        <div class="hex">
+            <hr/> Same color in hexadecimal format is <span id="hex"># 0a c8 ff</span>
+            <hr/>
+        </div>
+
+        <div id="lowerBlock">
+            <h2>Mixing colors <span id="dig">Diagrams</span></h2>
+            <div id="notesRGB">
+                <ul>
+                    <li>when all 3 same then different shades of grey</li>
+                    <li>RED + GREEN = YELLOW</li>
+                    <li>RED + BLUE = MAGENTA</li>
+                    <li>BLUE + GREEN = CYAN</li>
+                </ul>
+            </div>
+            <div id="notesHSL">
+                <ul>
+                    <li>Change HUE to change color</li>
+                    <li>Keep LIGHTNESS at 50% and tweak SATURATION for shades</li>
+                    <li>LIGHTNESS = 0% is BLACK</li>
+                    <li>LIGHTNESS = 100% is WHITE</li>
+                </ul>
+            </div>
+        </div>
+        <div class="post">
+            Any suggestions for better learning experience ?
+        </div>
+        <div id="img">
+            <div id="next">NEXT</div>
+            <div id="close">CLOSE</div>
+            <img src="http://www.color-theory-phenomena.nl/06-color-mixing/06-00-01-color-mixing-RGB.gif" alt="colors" />
+        </div>
+        <div id="mySidenav" class="sidenav">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            <ol>
+                <li><a href="https://color.adobe.com/create/color-wheel/" target="_blank">Adobe Color Palate</a></li>
+                <li><a href="https://www.w3schools.com/colors/colors_picker.asp" target="_blank">W3 school Color Picker</a></li>
+                <li><a href="http://www.flatuicolorpicker.com/" target="_blank">Cool UI color Collections</a></li>
+                <li><a href="http://paletton.com/#uid=1000u0kllllaFw0g0qFqFg0w0aF" target="_blank">Palette On</a></li>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Colors/Color_picker_tool" target="_blank">Mozilla Color Palette</a></li>
+            </ol>
+        </div>
+        <span id="refs" onclick="openNav()">&#9776;</span>
+        <div id="colorNames" class="sidenav">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeCNav()">&times;</a>
+            <ul>
+            </ul>
+        </div>
+        <span id="cnames" onclick="openCNav()">&#9776;</span>
+
+    </div>
+    <script>
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "80%";
+        }
+
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0%";
+        }
+
+        function openCNav() {
+            document.getElementById("colorNames").style.width = "80%";
+        }
+
+        function closeCNav() {
+            document.getElementById("colorNames").style.width = "0%";
+        }
+    </script>
+</body>
+
+</html>
+
